@@ -1,13 +1,13 @@
 import React from "react";
 
-const Demo = () => {
+const Login = () => {
   return (
     <>
       <div>
-        <p>Code Hub...</p>
+        <p>Login Page</p>
       </div>
     </>
   );
 };
 
-export default Demo;
+export default Login;
