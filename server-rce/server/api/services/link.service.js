@@ -30,7 +30,8 @@ class LinkService {
       if (isLink) {
         if (user._id.toString() == isLink.interviewer.toString()) {
           const deleted = await Link.deleteOne({ link });
-          if (deleted.ok) return true;
+          // console.log(deleted);
+          if (deleted.acknowledged) return true;
         } else {
           throw {
             message: "Only interviewer can end the interview!!",
@@ -56,7 +57,8 @@ class LinkService {
             { $push: { email } },
             { new: true }
           );
-          if (data.ok) {
+          // console.log(data);
+          if (data.acknowledged) {
             const sentMail = await this.sendMail(link, email, user);
             console.log(sentMail);
             if (sentMail) {
@@ -92,7 +94,7 @@ class LinkService {
             { $pull: { email } },
             { new: true }
           );
-          if (data.ok) {
+          if (data.acknowledged) {
             return true;
           }
         } else {
@@ -165,11 +167,11 @@ class LinkService {
     var mailOptions = {
       from: senderEmail,
       to: email,
-      subject: "Invitation for interview",
+      subject: "Invitation for Interview",
       // text: "",
       html: `<body>Hey,</body><body>You are invited for an interview with <b>${user.name}</b>. You are requested to SignIn through this email
         only for this interview.</body> <br><body><b>Your code is:</b><br>${code}</body>
-        <br><br><body>All the best,<br>Team Codex</body>`,
+        <br><br><body>All the best,<br>Team CodeHub <br> <i> CEOs : Samar, Akhil, Atul </i></body>`,
     };
 
     const isSent = await transporter.sendMail(mailOptions);
