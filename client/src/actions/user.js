@@ -8,7 +8,7 @@ import {
 import { api_route } from "./route";
 import jwtDecode from "jwt-decode";
 
-export const auth = async (data) => {
+export const googleAuth = async (data) => {
   try {
     const config = {
       headers: {
@@ -17,7 +17,7 @@ export const auth = async (data) => {
     };
     const { client_id, jwtToken } = data;
     const body = { client_id, jwtToken };
-    const res = await axios.post(`${api_route}/login/`, body, config);
+    const res = await axios.post(`${api_route}/login/google`, body, config);
     const decodedData = jwtDecode(res.data.token);
     return {
       type: SET_AUTH_SUCCESS,
@@ -26,6 +26,27 @@ export const auth = async (data) => {
         email: decodedData.email,
         image: decodedData.dp,
       },
+      token: res.data.token,
+    };
+  } catch (err) {
+    return {
+      type: SET_AUTH_FAILURE,
+    };
+  }
+};
+
+export const auth = async (data) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const body = JSON.stringify({ ...data, dp: data.image });
+    const res = await axios.post(`${api_route}/login/`, body, config);
+    return {
+      type: SET_AUTH_SUCCESS,
+      payload: data,
       token: res.data.token,
     };
   } catch (err) {

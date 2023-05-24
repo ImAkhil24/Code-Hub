@@ -3,7 +3,7 @@ import styles from "./styles/header.module.css";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
-import { auth, fetchUser, logoutUser } from "../../actions/user";
+import { googleAuth, fetchUser, logoutUser } from "../../actions/user";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -22,7 +22,7 @@ const Header = () => {
       const res = await fetchUser();
       dispatch(res);
     } else {
-      const res = await auth({ client_id, jwtToken });
+      const res = await googleAuth({ client_id, jwtToken });
       //   console.log(res);
       dispatch(res);
     }
