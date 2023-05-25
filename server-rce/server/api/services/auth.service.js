@@ -23,7 +23,12 @@ class AuthService {
 
       // can't read property of null
       const token = jwt.sign(
-        { _id: setUser._id, email: setUser.email },
+        {
+          _id: setUser._id,
+          email: setUser.email,
+          name: setUser.name,
+          dp: setUser.dp,
+        },
         JWT_SECRET
       );
       return token;
