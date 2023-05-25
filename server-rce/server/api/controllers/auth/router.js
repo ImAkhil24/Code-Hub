@@ -5,5 +5,6 @@ import googleLogin from "../../middlewares/googleLogin.js";
 
 export default express
   .Router()
-  .post("/", googleLogin, controller.execute)
+  .post("/google", googleLogin, controller.execute)
+  .post("/", controller.execute)
   .get("/", isLoggedIn, controller.fetchUser);
