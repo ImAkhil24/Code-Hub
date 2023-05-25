@@ -6,12 +6,14 @@ import { exec } from "child_process";
 const ROOT_DIR = `${process.cwd()}`;
 const SOURCE_DIR = path.join(ROOT_DIR, "executor");
 const TARGET_DIR = `/app/codes`;
+const IMAGE_NAME = 'executor:1.0';
+
 const VOL_NAME = SOURCE_DIR;
 
 class CodeService {
   async execute(code, input, lang, id) {
     try {
-      !input ? (input = "") :;
+      !input ? (input = "") :NULL;
 
       // validation of the desired programming language
       const { isValid, message } = await ValidationService.execute(
@@ -27,7 +29,7 @@ class CodeService {
       const { file, inputFile } = await this.writeFile(code, lang, input, id);
 
       // making command
-      const { runCode, runContainer } = awaitconst VOL_NAME = SOURCE_DIR; this.writeCommand(
+      const { runCode, runContainer } = await this.writeCommand(
         lang,
         file,
         inputFile,
@@ -45,6 +47,7 @@ class CodeService {
         lang,
         code
       );
+      console.log("lksdfjlksdf");
 
       if (stderr || stdout) {
         // console.log("output", stderr, stdout);
@@ -138,14 +141,17 @@ class CodeService {
 
         // create new shell and add listners
         const execCont = exec(`${runContainer}`);
-
+        console.log(runContainer);
         execCont.on("error", (err) => {
         throw { status: "404", message: err };
         });
+        console.log(runCode);
 
         execCont.stdout.on("data", () => {
-        exec(`${runCode}`, async (error, stdout, stderr) => {
+          exec(`${runCode}`, async (error, stdout, stderr) => {
             // cleaning up
+
+            console.log(stdout);
             await this.endContainer(id);
             await this.deleteFiles(file, inputFile, lang, id, code);
             const response = {
@@ -191,3 +197,5 @@ class CodeService {
         }
     }
 }
+
+export default new CodeService();
