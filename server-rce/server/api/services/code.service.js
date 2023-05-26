@@ -1,5 +1,6 @@
 import ValidationService from "./validation.service";
-import fs from "fs/promises";
+import fs from "fs";
+import {writeFile} from "fs/promises"
 import path from "path";
 import util from "util";
 import { exec } from "child_process";
@@ -47,7 +48,6 @@ class CodeService {
         lang,
         code
       );
-      console.log("lksdfjlksdf");
 
       if (stderr || stdout) {
         // console.log("output", stderr, stdout);
@@ -87,8 +87,8 @@ class CodeService {
     }
 
     try {
-      await fs.writeFile(path.join(SOURCE_DIR, fileName), code);
-      await fs.writeFile(path.join(SOURCE_DIR, `${id}input.txt`), input);
+      await writeFile(path.join(SOURCE_DIR, fileName), code);
+      await writeFile(path.join(SOURCE_DIR, `${id}input.txt`), input);
       return {
         file: fileName,
         inputFile: `${id}input.txt`,
@@ -150,8 +150,6 @@ class CodeService {
         execCont.stdout.on("data", () => {
           exec(`${runCode}`, async (error, stdout, stderr) => {
             // cleaning up
-
-            console.log(stdout);
             await this.endContainer(id);
             await this.deleteFiles(file, inputFile, lang, id, code);
             const response = {
@@ -175,27 +173,20 @@ class CodeService {
     }
 
     async deleteFiles(fileName, inputName, lang, id, code) {
-        // can also save code to view preious submission or verdicts
-
-        // deleting file async
-        fs.unlink(path.join(SOURCE_DIR, fileName), (err) => {
+      fs.unlink(path.join(SOURCE_DIR, fileName), (err) => {
+        if (err) throw { message: err };
+      });
+      if (inputName) {
+        fs.unlink(path.join(SOURCE_DIR, inputName), (err) => {
           if (err) throw { message: err };
         });
-
-        if (inputName) {
-          fs.unlink(path.join(SOURCE_DIR, inputName), (err) => {
-            if (err) throw { message: err };
+      }
+      if (lang == "cpp" || lang == "c") {
+        if (fs.existsSync(path.join(SOURCE_DIR, id)))
+          fs.unlink(path.join(SOURCE_DIR, id), (err) => {
+            if (err) throw err;
           });
-        }
-
-        if (lang == "cpp" || lang == "c") {
-            // oject file
-          if (fs.existsSync(path.join(SOURCE_DIR, id)))
-            fs.unlink(path.join(SOURCE_DIR, id), (err) => {
-              if (err) throw err;
-            });
-        }
+      }
     }
-}
-
+  }
 export default new CodeService();

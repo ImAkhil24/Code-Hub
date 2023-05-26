@@ -14,7 +14,6 @@ export class Controller {
               
                 console.log(output)
                 if (output) {
-                    console.log("nhiii");
                     res.send({
                         status: "200",
                         message: "Code Successfully Executed",
