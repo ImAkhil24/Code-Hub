@@ -1,5 +1,6 @@
 import CodeService from './../../services/code.service'
 import { v4 as uuidv4 } from "uuid";
+import path from 'path'
 
 export class Controller {
     async execute(req, res) {
@@ -29,11 +30,27 @@ export class Controller {
         } catch (error) {
             res.send({
                 status: error.status || "500",
-                message: error.message || "Something Went Wrong",
+                messagDe: error.message || "Something Went Wrong",
             });
         }
 
     }
+
+    async getcwd(req, res) {
+        try {
+            res.send({
+                status: "200",
+                message:
+                  "Current working directory is : " +
+                  path.join(process.cwd(), "executor").replace(" ", "\\ "),
+              });
+        } catch (error) {
+            res.status(500).send({
+            status: error.status || "500",
+            message: error.message || "Something Went Wrong",
+            });
+        }
+    } 
 }
 
 export default new Controller();
