@@ -28,7 +28,7 @@ function Modal({ user, logout, unclick }) {
 
   return (
     <div ref={wrapperRef} className={styles.modal}>
-      <img alt="User Profile" className={styles.modalImage} src={user.image} />
+      <img alt="User Profile" className={styles.modalImage} src={user.image || "pp.jpg"} />
       <h3 className={styles.modalName}>{user.name}</h3>
       <h4 className={styles.modalEmail}>{user.email}</h4>
       <button onClick={logout} className={styles.modalButton}>
