@@ -80,9 +80,9 @@ const Terminal = () => {
       backgroundColor: `${color[Math.floor(Math.random() * 10) + 1]}`,
       transition: {
         delay: i * 0.3,
-        ease: "easeOut",
         duration: i * 1,
-        repeat: "Infinity",
+        repeat: Infinity,
+        ease: "easeOut",
       },
     }),
     hidden: {
@@ -121,7 +121,7 @@ const Terminal = () => {
           <Dot color={"green"} />
         </div>
         <div className={styles.terminal_body}>
-          {Array.from(Array(9), (e, i) => {
+          {Array.from(Array(8), (e, i) => {
             let random_color = Math.floor(Math.random() * 10) + 1;
             let random_width = Math.floor(Math.random() * 10) + 1;
             return (
@@ -136,11 +136,10 @@ const Terminal = () => {
                   backgroundColor: `${color[random_color]}`,
                   borderRadius: 15,
                 }}
-                variants={item}
-                // initial="hidden"
+                initial="hidden"
                 animate="visible"
-                transition={{ duration: 1, repeat: Infinity }}
-                // custom={i}
+                variants={item}
+                custom={i}
                 key={i}
               >
                 {/* <Body
