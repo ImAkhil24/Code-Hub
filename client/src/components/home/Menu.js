@@ -26,10 +26,6 @@ const Menu = ({ open, handleClose }) => {
             <UserCheck style={{ marginRight: 20 }} />
             Hosted Interviews
           </li>
-          <li>
-            <Code style={{ marginRight: 20 }} />
-            Interviews
-          </li>
         </ul>
       </div>
     </Drawer>
