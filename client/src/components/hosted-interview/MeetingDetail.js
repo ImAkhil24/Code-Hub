@@ -26,7 +26,7 @@ const MeetingDetail = ({ link, index }) => {
   };
 
   const onLink = () => {
-    history.push(`/interview/${link.link}`, null);
+    history(`/interview/${link.link}`);
   };
 
   const onCopy = () => {

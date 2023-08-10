@@ -14,7 +14,7 @@ const HostedInterview = () => {
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      history.push('/');
+      history("/");
     } else {
       fetchLinks();
     }
@@ -38,7 +38,6 @@ const HostedInterview = () => {
             </li>
 
             {links.map((link, index) => (
-              // <div>link</div>
               <MeetingDetail key={index} link={link} />
             ))}
           </ul>
