@@ -1,11 +1,11 @@
 import { addUser, getUsersInRoom, removeUser } from "./socketutil";
 
 const interviewSocketIO = (socket) => {
-  socket.on("joinInterview", ({ email, roomId }) => {
+  socket.on("joinInterview", (email, roomId) => {
+    console.log({ email, roomId }, "jsfdlkjdfskljsdfkljlk");
     const { error, user } = addUser({ id: socket.id, email, room: roomId });
-    //console.log(user);
     const users = getUsersInRoom(roomId);
-    console.log(users);
+    // console.log(users);
     if (user) {
       socket.join(roomId);
       socket.emit("log", user);

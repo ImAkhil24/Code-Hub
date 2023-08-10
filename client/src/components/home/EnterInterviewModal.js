@@ -15,7 +15,11 @@ const EnterInterviewModal = ({ open, handleClose, link }) => {
 
   const onEnterInterviewRequest = async () => {
     const access = await checkAccess(code);
-    if (access) navigate(`interview/${code}`);
+    // console.log("yaaaaaaaaaaaaaaaaaaaa");
+    if (access) {
+      console.log("jlksfdjksfld");
+      navigate(`interview/${code}`);
+    }
   };
 
   return (

@@ -16,7 +16,15 @@ import Draggable from "react-draggable";
 import { BiLinkExternal } from "react-icons/bi";
 import { MdDragHandle, MdAirplay } from "react-icons/md";
 import { toast } from "react-toastify";
-import {ThreeDots} from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
+
+import {
+  getDefaultCode,
+  setLanguageLocalStorage,
+  getLanguageLocalStorage,
+  setCodeLocalStorage,
+  getCodeLocalStorage,
+} from "./utils/code-settings";
 
 const ENDPOINT = "http://localhost:3000";
 
@@ -40,10 +48,10 @@ const CodeEditor = ({ theme, roomId }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   // const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const user = useSelector((state) => state.user);
-  const [language, setLanguage] = useState("java");
+  const [language, setLanguage] = useState("cpp");
   const [input, setInput] = useState("");
   const [token, setToken] = useState(null);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(getDefaultCode("cpp"));
   const dispatch = useDispatch();
   const valueGetter = useRef();
   const navigate = useNavigate();
@@ -66,7 +74,7 @@ const CodeEditor = ({ theme, roomId }) => {
           console.log("vdid", vdid);
           const call = mypeer.call(vdid, media);
           call.on("stream", (stream) => {
-            addVideoStream(stream, vdid, false, name);
+            // addVideoStream(stream, vdid, false, name);
           });
           call.on("close", () => {
             const video = document.querySelector(`.${vdid}`);
@@ -125,7 +133,7 @@ const CodeEditor = ({ theme, roomId }) => {
         navigate("/");
         return;
       }
-      // console.log(user);
+      console.log(user);
       addVideoStream(media, vdid, true, user.name);
       socket.emit("joinRoom", roomId, vdid, user.name);
     });
@@ -211,9 +219,9 @@ const CodeEditor = ({ theme, roomId }) => {
 
   const onChangeCode = (newValue, e) => {
     // console.log("onChange" + e);
-    socket.emit("getCodeExec", roomId, e);
+    socket.emit("getCodeExec", roomId, newValue);
     //setCodeLocalStorage(e);
-    setCode(e);
+    setCode(newValue);
   };
 
   const SubmitCode = async () => {
@@ -238,9 +246,9 @@ const CodeEditor = ({ theme, roomId }) => {
   };
 
   const changeLanguage = (e) => {
-    // setLanguageLocalStorage(e.target.value);
-    // setCode(getDefaultCode(e.target.value));
-    // setCodeLocalStorage(getDefaultCode(e.target.value));
+    setLanguageLocalStorage(e.target.value);
+    setCode(getDefaultCode(e.target.value));
+    setCodeLocalStorage(getDefaultCode(e.target.value));
     socket.emit("getLanguage", roomId, e.target.value);
     setLanguage(e.target.value);
   };
