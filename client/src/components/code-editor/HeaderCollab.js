@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import ToggleTheme from './ToggleTheme';
-import styles from './styles/headerStyles.module.css';
-import { Code } from 'react-feather';
-import { useNavigate } from 'react-router-dom';
-import { UserPlus } from 'react-feather';
-import CollabModal from '../collab-modal/CollabModal';
-import { deleteLink } from '../../actions/interview-link';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import ToggleTheme from "./ToggleTheme";
+import styles from "./styles/headerStyles.module.css";
+import { Code } from "react-feather";
+import { useNavigate } from "react-router-dom";
+import { UserPlus } from "react-feather";
+import CollabModal from "../collab-modal/CollabModal";
+import { deleteLink } from "../../actions/interview-link";
+import { useDispatch } from "react-redux";
 
-const HeaderCollab = props => {
+const HeaderCollab = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openCollab, setOpenCollab] = useState(false);
@@ -20,7 +20,7 @@ const HeaderCollab = props => {
   const onDeleteLink = async () => {
     const res = await deleteLink(props.link);
     dispatch(res);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -28,7 +28,7 @@ const HeaderCollab = props => {
       <div className={styles.header}>
         <p className={styles.brand}>
           <Code className={styles.icon} />
-          Code<span className={styles.letter}>X</span>
+          Code<span className={styles.letter}>Hub</span>
         </p>
         <div className={styles.row}>
           <div className={styles.end_meet} onClick={onDeleteLink}>
@@ -36,7 +36,7 @@ const HeaderCollab = props => {
           </div>
           <div className={styles.share} onClick={toggleCollab}>
             <p>Share</p>
-            <UserPlus color={'black'} />
+            <UserPlus color={"black"} />
           </div>
           <ToggleTheme {...props} />
         </div>

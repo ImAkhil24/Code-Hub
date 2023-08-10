@@ -5,7 +5,7 @@ import { GlobalStyles } from "../../constants/global";
 import { useDarkMode } from "../../utils/useDarkMode";
 import Footer from "./Footer.js";
 import Editor from "./CollabEditor";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn } from "../../utils/isLoggedIn";
 import HeaderCollab from "./HeaderCollab";
@@ -15,7 +15,8 @@ import { checkAccess } from "../../actions/interview-link";
 
 // const socket = io(ENDPOINT);
 
-const CollabEditorIndex = (props) => {
+const CollabEditorIndex = () => {
+  const params = useParams();
   const [theme, toggleTheme, componentMounted] = useDarkMode();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -23,48 +24,8 @@ const CollabEditorIndex = (props) => {
 
   const themeMode = theme === "light" ? lightTheme : darkTheme;
 
-  // useEffect(() => {
-  //   if (!isLoggedIn()) {
-  //     navigate('/');
-  //   } else {
-  //     checkAccessForLink();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   socket.on('welcome', data => {
-  //     console.log('welcome', data);
-  //   });
-  //   socket.on('end', data => {
-  //     console.log(data, 'end');
-  //   });
-  //   socket.on('setUsersInInterview', data => {
-  //     console.log('Users', data);
-  //   });
-  //   return () => {
-  //     socket.emit('endInterview');
-
-  //     socket.off();
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   socket.emit('getUsersInInterview', props.match.params.id);
-  // });
-
-  // useEffect(() => {
-  //   socket.emit('joinInterview', {
-  //     email: user.email,
-  //     roomId: props.match.params.id
-  //   });
-
-  //   socket.on('log', data => {
-  //     console.log('socketData', data);
-  //   });
-  // }, [props.match.params.id, user]);
-
   const checkAccessForLink = async () => {
-    const access = await checkAccess(props.match.params.id);
+    const access = await checkAccess(params.id);
     if (!access) navigate("/");
   };
 
@@ -75,13 +36,9 @@ const CollabEditorIndex = (props) => {
   return (
     <ThemeProvider theme={themeMode}>
       <GlobalStyles />
-      <HeaderCollab
-        theme={theme}
-        toggleTheme={toggleTheme}
-        link={props.match.params.id}
-      />
+      <HeaderCollab theme={theme} toggleTheme={toggleTheme} link={params.id} />
       <Footer />
-      <Editor theme={theme} roomId={props.match.params.id} />
+      <Editor theme={theme} roomId={params.id} />
     </ThemeProvider>
   );
 };
